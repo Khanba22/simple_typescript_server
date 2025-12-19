@@ -1,41 +1,41 @@
-pipeline{
-    agent any
-
-    tools{
-        nodejs 'node18'
+pipeline {
+    agent {
+        docker {
+            image 'node:18'
+        }
     }
 
-    stages{
-        stage('checkout'){
-            steps{
+    stages {
+        stage('Checkout') {
+            steps {
                 checkout scm
             }
         }
 
-        stage('install dependencies'){
-            steps{
+        stage('Install Dependencies') {
+            steps {
                 sh 'npm install'
             }
         }
 
-        stage('build server'){
-            steps{
+        stage('Build Server') {
+            steps {
                 sh 'npm run build'
             }
         }
 
-        stage('run tests'){
-            steps{
+        stage('Run Tests') {
+            steps {
                 sh 'npm test'
             }
         }
     }
 
-    post{
-        success{
+    post {
+        success {
             echo 'Pipeline completed successfully!'
         }
-        failure{
+        failure {
             echo 'Pipeline failed. Please check the logs.'
         }
     }
