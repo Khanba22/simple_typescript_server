@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'node18'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -8,15 +12,22 @@ pipeline {
             }
         }
 
+        stage('Verify Node Environment') {
+            steps {
+                bat 'node -v'
+                bat 'npm -v'
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
-                bat 'npm install'
+                bat 'npm ci'
             }
         }
 
         stage('Build Server') {
             steps {
-                bat 'npm run build'
+                bat 'npm run build --if-present'
             }
         }
 
@@ -33,6 +44,9 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed. Please check the logs.'
+        }
+        always {
+            echo 'Pipeline execution finished.'
         }
     }
 }
