@@ -14,26 +14,26 @@ pipeline {
 
         stage('Verify Node Environment') {
             steps {
-                bat 'node -v'
-                bat 'npm -v'
+                sh 'node -v'
+                sh 'npm -v'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                bat 'npm ci'
+                sh 'npm ci'
             }
         }
 
         stage('Build Server') {
             steps {
-                bat 'npm run build --if-present'
+                sh 'npm run build --if-present'
             }
         }
 
         stage('Run Tests') {
             steps {
-                bat 'npm test'
+                sh 'npm test'
             }
         }
     }
